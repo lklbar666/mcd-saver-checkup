@@ -115,6 +115,25 @@ class McpClient:
         return self._rpc("tools/call", {"name": name, "arguments": arguments})
 
 
+def extract_payload(result: dict) -> dict | None:
+    """从 tools/call 的返回里取出业务 JSON。
+
+    MCP 的返回是 {"content":[{"type":"text","text":"...说明...\n{json}"}]}，
+    而且 text 里 JSON 之后可能还有内容，所以用 raw_decode 只取第一个完整对象。
+    """
+    text = "".join(b.get("text", "") for b in (result or {}).get("content", []) if isinstance(b, dict))
+    dec = json.JSONDecoder()
+    for anchor in ('{"success"', "{", "["):
+        start = text.find(anchor)
+        while start >= 0:
+            try:
+                obj, _ = dec.raw_decode(text[start:])
+                return obj
+            except json.JSONDecodeError:
+                start = text.find(anchor, start + 1)
+    return None
+
+
 # -------------------------------------------------------------------- CLI
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="麦当劳 MCP 客户端")
