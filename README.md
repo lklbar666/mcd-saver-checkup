@@ -1,5 +1,11 @@
 # 麦门省钱体检 · mcd-saver-checkup
 
+<p align="center">
+  <a href="https://ima.qq.com/skill?shareId=9e1fecab05fd48e299b7df116d884c0a"><b>▶ 在线体验（ima Skill）</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/lklbar666/mcd-saver-checkup">源码</a>
+</p>
+
 > 不看你想吃什么，先看你**已经亏在哪**。
 
 基于麦当劳中国 MCP 的省钱审计 Skill。同类项目都在回答「怎么点最省」，它回答**「你这一单多花了多少、亏在哪一步、下次怎么不再亏」**——每个数字都来自 `calculate-price`，可当场复算。
@@ -65,6 +71,24 @@
 - 一共多花了多少
 - 主要亏在哪个动作：没用券 / 套餐选错 / 凑单过度 / 单点比套餐贵
 
+## 在线体验
+
+不想装环境？直接在 ima 里试：
+
+**▶ [麦当劳省钱体检助手](https://ima.qq.com/skill?shareId=9e1fecab05fd48e299b7df116d884c0a)**
+
+这是本仓库打包成的 ima Skill，内置同一套差价引擎。可以这样问：
+
+```
+帮我体检一下：我平时点麦辣鸡腿汉堡 + 薯条 + 可乐
+```
+
+```
+满 60 减 12，我想吃麦乐鸡 10 块，值得凑吗？
+```
+
+> 在线版与命令行版共用同一套逻辑；命令行版可换门店、换时段、批量跑，适合核对与复现。
+
 ## 安装
 
 1. 申请麦当劳 MCP Token：<https://open.mcd.cn/mcp> → 登录 → 控制台 → 激活 → 复制
@@ -125,6 +149,7 @@ scripts/load_menu.py    把 MCP 实时菜单/套餐/可领券转成引擎格式
 scripts/mcd_mcp.py      MCP 客户端（JSON-RPC over streamable HTTP）
 data/mock_menu.json     离线演示数据（假数据，非真实价目）
 data/menu-1950564.json  某门店的真实快照（2026-10-21，会过期）
+（在线版）              https://ima.qq.com/skill?shareId=9e1fecab05fd48e299b7df116d884c0a
 examples/               用法示例
 MCP_INTEGRATION.md      用到的 MCP 工具、调用链与业务价值
 CONTEST_DECLARATION.md  参赛声明（官方原文，未改动）
