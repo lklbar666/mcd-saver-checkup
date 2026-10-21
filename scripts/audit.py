@@ -69,6 +69,7 @@ class Plan:
     surplus: List[str] = field(default_factory=list)   # 多得但没要求的东西
     coupon: Optional[str] = None
     combo_ids: List[str] = field(default_factory=list)
+    residual: Dict[str, int] = field(default_factory=dict)   # 单点购买的部分（券只作用于它）
     note: str = ""
 
 
@@ -193,7 +194,8 @@ def enumerate_plans(wanted: Dict[str, int], items: Dict[str, Item], combos: List
                          for i, q in wanted.items()]
             label = "单点" if not combo_set else " + ".join(c.name for c in combo_set)
             plans.append(Plan(label, round(cost, 2), lines, surplus,
-                              combo_ids=[c.id for c in combo_set]))
+                              combo_ids=[c.id for c in combo_set],
+                              residual={k: v for k, v in remaining.items() if v > 0}))
 
     # 满减与券的叠加：默认二选一；只有券标了 stackable 才允许叠
     expanded: List[Plan] = []
@@ -209,14 +211,16 @@ def enumerate_plans(wanted: Dict[str, int], items: Dict[str, Item], combos: List
         # B. 用券：默认只在不叠满减的原始价上算；stackable 才叠在满减后
         for cp in coupons:
             anchor = prom_cost if cp.stackable else base_cost
-            new_cost, ok, note = apply_coupon(anchor, wanted, cp, prices)
+            # 关键：套餐内已含的商品不能再套单品券，否则等于把同一个汉堡算两次
+            new_cost, ok, note = apply_coupon(anchor, p.residual, cp, prices)
             if ok and new_cost < prom_cost - 0.001:
                 detail = base_detail + (["满减：%s（省 %s）" % (pname, money(base_cost - prom_cost))]
                                         if (pname and cp.stackable) else [])
                 detail = detail + ["用券：%s（%s）%s" % (cp.name, note,
                                                         "" if cp.stackable else "，不与满减叠加")]
                 expanded.append(Plan(p.label + " + " + cp.name, round(new_cost, 2), detail,
-                                     p.surplus, coupon=cp.name, combo_ids=p.combo_ids))
+                                     p.surplus, coupon=cp.name, combo_ids=p.combo_ids,
+                                     residual=p.residual))
     # 去重（同价同券只留一条）
     seen = set()
     uniq: List[Plan] = []
