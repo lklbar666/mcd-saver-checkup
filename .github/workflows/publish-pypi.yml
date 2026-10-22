@@ -1,4 +1,4 @@
-name: Publish PyPI package to GitHub Packages
+name: Publish npm package to GitHub Packages
 
 on:
   push:
@@ -16,19 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-node@v4
         with:
-          python-version: "3.11"
+          node-version: "22"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@lklbar666"
 
-      - name: Build distributions
-        run: |
-          python -m pip install --upgrade pip build twine
-          python -m build
-
-      - name: Publish to GitHub Packages (PyPI)
+      - name: Publish to GitHub Packages (npm)
+        run: npm publish
         env:
-          TWINE_USERNAME: ${{ github.actor }}
-          TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          TWINE_REPOSITORY_URL: https://pypi.pkg.github.com/${{ github.repository_owner }}
-        run: |
-          python -m twine upload dist/*
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

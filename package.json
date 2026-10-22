@@ -1,0 +1,30 @@
+{
+  "name": "@lklbar666/mcd-saver-checkup",
+  "version": "1.0.0",
+  "description": "基于麦当劳中国 MCP 的省钱审计 Skill：算清你这一单多花了多少、亏在哪一步、下次怎么不再亏",
+  "license": "MIT",
+  "author": "lklbar666",
+  "keywords": ["mcdonalds", "mcp", "savings", "audit", "skill"],
+  "files": [
+    "SKILL.md",
+    "MCP_INTEGRATION.md",
+    "workbuddy.md",
+    "CONTEST_DECLARATION.md",
+    "README.md",
+    "LICENSE",
+    "scripts/",
+    "data/",
+    "examples/"
+  ],
+  "bin": {
+    "mcd-audit": "scripts/audit.py",
+    "mcd-load-menu": "scripts/load_menu.py",
+    "mcd-mcp": "scripts/mcd_mcp.py"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
