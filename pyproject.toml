@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcd-saver-checkup"
+version = "1.0.0"
+description = "基于麦当劳中国 MCP 的省钱审计工具：算清你这一单多花了多少、亏在哪一步、下次怎么不再亏"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "lklbar666"}]
+keywords = ["mcdonalds", "mcp", "savings", "audit", "skill"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Utilities",
+]
+
+[project.scripts]
+mcd-audit = "audit:main"
+mcd-load-menu = "load_menu:main"
+mcd-mcp = "mcd_mcp:main"
+
+[tool.setuptools]
+py-modules = ["audit", "load_menu", "mcd_mcp"]
+
+[tool.setuptools.package-dir]
+"" = "scripts"
+
+[tool.setuptools.data-files]
+"share/mcd-saver-checkup" = ["data/mock_menu.json"]
