@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+private/
+**/private/
+mcp-config.local.json
+__pycache__/
+*.pyc
+.DS_Store
+.workbuddy/
